@@ -1,0 +1,104 @@
+<div >
+    <form [formGroup]="InstallmentForm" (ngSubmit)="create_installment()">
+        <div class="d-flex maindiv">
+        <div class="inputdiv d-flex">
+            <div class="subdiv">
+            <label for="month">Month :</label>
+            <select id="month" formControlName="Month" (change)="handleDateChange()">
+                <!-- <option value="Select Month">Select Month</option> -->
+                <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+            </select>
+            </div>
+    
+            <div class="subdiv">
+            <label for="year">Year :</label>
+            <select id="year" formControlName="Year" (change)="handleDateChange()">
+                <!-- <option value="Select Year">Select Year</option> -->
+                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+            </select>
+            </div>
+        </div>
+        <div class="inputdiv d-flex">
+            <div class="subdiv">
+                <label for="amount">Enter Amount :</label>
+                <input type="text" id="amount" formControlName="Amount" />
+            </div>
+    
+            <!-- <div class="subdiv">
+                <input type="checkbox" class="form-check-input" formControlName="Penalty" />
+                <label class="form-check-label ml-1" style="">Penalty</label>
+            </div> -->
+    
+            <div class="subdiv ">
+                <button type="submit" class="btn btn-primary button ml-2" [disabled]="InstallmentForm.invalid">
+                    ADD
+                </button>
+            </div>
+        </div>
+        </div>
+    </form>
+</div>
+
+
+<!-- <div *ngIf="UserType == 'Admin'"> -->
+<div>
+    <div class="pendingdiv">
+        <h4>Pending Request</h4>
+        <div class="all-request" style="overflow-x: auto">
+            <table class="table-sm table-borderless request_table">
+              <thead>
+                <th>No.</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Action</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pr of PendingRequest; let i = index">
+                    <td>{{ i+1 }}</td>
+                    <td>{{ pr.Member_Name }}</td>
+                    <td>{{ pr.Date }}</td>
+                    <td>{{ pr.Amount }}</td>
+                    <td>
+                        <div *ngIf="UserType == 'admin'" class="d-flex mt-2">
+                            <p style="cursor: pointer; color: yellowgreen;" (click)="approveDeleteRequest(pr._id, true)">Approve</p>
+                            <p style="margin-left: 5px; cursor: pointer; color: brown;"  (click)="approveDeleteRequest(pr._id, false)">Delete</p>
+                        </div>
+                        <div *ngIf="UserType == 'member'" class="d-flex mt-2">
+                            <p style="cursor: pointer; color: brown;"  (click)="approveDeleteRequest(pr._id, false)">Withdraw</p>
+                        </div>
+
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    </div>
+</div>
+
+
+<div>
+    <div class="installmentdiv">
+        <h4>Installment History</h4>
+        <div class="all-request" style="overflow-x: auto">
+            <table class="table-sm table-borderless installment_table">
+              <thead>
+                <th>No.</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Total</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let td of InstallmentDetails; let i = index">
+                    <td>{{ i+1 }}</td>
+                    <td>{{ td.Member_Name }}</td>
+                    <td>{{ td.Date }}</td>
+                    <td>{{ td.Amount }}</td>
+                    <td>{{ td.Total }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    </div>
+</div>

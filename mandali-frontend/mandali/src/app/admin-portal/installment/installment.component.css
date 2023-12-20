@@ -1,0 +1,95 @@
+.maindiv {
+    margin-top: 20px;
+}
+
+.subdiv {
+    margin-left: 20px;
+}
+
+.pendingdiv {
+    margin-top: 30px;
+    margin-left: 20px;
+}
+
+.installmentdiv {
+  margin-top: 30px;
+  margin-left: 20px;
+}
+  
+.request_table {
+  width: 50%;
+}
+
+.installment_table {
+  width: 65%;
+}
+
+#month {
+  min-width: 100px;
+}
+
+#year {
+  min-width: 60px;
+}
+
+@media screen and (max-width: 715px) {
+    .subdiv {
+        margin-left: 10px;
+    }
+    .request_table {
+      width: 100%;
+    }
+    .installment_table {
+      width: 100%;
+    }
+    
+    #month {
+      min-width: 80px;
+    }
+
+    #year {
+      min-width: 40px;
+    }
+}
+  
+@media screen and (max-width: 610px) {
+    .inputdiv {
+      font-size: 12px;
+    }
+    .request_table {
+      font-size: 14px;
+    }
+    .installment_table {
+      font-size: 14px;
+    }
+    .request_table {
+      width: 100%;
+    }
+    .installment_table {
+      width: 100%;
+    }
+}
+
+@media screen and (max-width: 458px) {
+    .maindiv {
+      display: flex;
+      flex-direction: column;
+    }
+    .inputdiv {
+      font-size: 12px;
+      margin-top: 10px;
+    }
+    .request_table {
+      font-size: 12px;
+    }
+    .installment_table {
+      font-size: 12px;
+    }
+    .request_table {
+      width: 100%;
+    }
+    .installment_table {
+      width: 100%;
+    }
+}
+  

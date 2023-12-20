@@ -1,0 +1,106 @@
+const mongo = require("../database/database.service");
+const schema = require("../database/database.schema");
+const bcrypt = require("bcryptjs");
+const SALT_WORK_FACTOR = 10;
+const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
+const decrypt = require("./decryption");
+const Cryptr = require("cryptr");
+
+const User = schema.User;
+const Mandali = schema.Mandali;
+
+let add_user = async function (req, res) {
+  let body = req.body;
+  let data = {};
+  try {
+    let user = body;
+    user.Password = bcrypt.hashSync(user.Password, SALT_WORK_FACTOR);
+    user.IsLoginAble = true;
+    user.UserType = "member";
+    user.Username = body.FirstName + " " + body.LastName;
+
+    user = new User(user);
+    await user.save();
+
+    return res.status(201).json({
+      statusMessage: " User Profile Created successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log(`Error in catch : ${error}`);
+    return res.status(501).json({
+      statusMessage: "Error in add member, Please try again!",
+      data: error,
+      success: false,
+    });
+  }
+};
+
+let read_user = async function (req, res) {
+  let body = req.body;
+  let data = {};
+  try {
+    data.UserDetails = await User.aggregate([
+      {
+        $match: {
+          MandaliId: new mongoose.Types.ObjectId(body.MandaliId),
+        },
+      },
+      {
+        $lookup: {
+          from: "installments",
+          localField: "_id",
+          foreignField: "UserId",
+          as: "installment_detail",
+        },
+      },
+      {
+        $unwind: {
+          path: "$installment_detail",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          Username: {
+            $first: "$Username",
+          },
+          ContactNumber: {
+            $first: "$ContactNumber",
+          },
+          TotalInvestment: {
+            $sum: { $ifNull: ["$installment_detail.Amount", 0] },
+          },
+          createdAt: {
+            $first: "$createdAt",
+          },
+        },
+      },
+      {
+        $sort: {
+          createdAt: 1,
+        },
+      },
+    ]);
+
+    return res.status(201).json({
+      statusMessage: " User Profile Read successfully",
+      success: true,
+      data: data,
+    });
+  } catch (error) {
+    console.log(`Error in catch : ${error}`);
+    return res.status(501).json({
+      statusMessage: "Error in read user",
+      data: error,
+      success: false,
+    });
+  }
+};
+
+module.exports = {
+  add_user: add_user,
+  read_user: read_user,
+};

@@ -1,0 +1,142 @@
+
+
+<div class="topnav" id="myTopnav" *ngIf="checkUserLogin()">
+    <!-- <a routerLink="#home" class="active">Home</a> -->
+    <!-- <a (click)="redirectToDashboard()" [ngClass]="{ 'active': activeLink === 'dashboard' }" style="cursor: pointer;">Home</a> -->
+    <a routerLink="/admin/dashboard" routerLinkActive="active">Home</a>
+    <a routerLink="/admin/installment" routerLinkActive="active">Create</a>
+    <a routerLink="/admin/realize" routerLinkActive="active">Realize</a>
+    <a routerLink="/admin/report" routerLinkActive="active">Report</a>
+    <a routerLink="/admin/history" routerLinkActive="active">History</a>
+    <a routerLink="/admin/suggestion" routerLinkActive="active">Suggestion</a>
+
+    <a href="javascript:void(0);" class="icon" (click)="myFunction()">
+      <!-- <i class="fa fa-bars">hello</i> -->
+      <i class="">☰</i>
+    </a>
+    <!-- <div class="btn-group">
+      <a type="button" id="profile" class="nav-link nav_right_font dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+  aria-expanded="false">
+        <img *ngIf="!getProfilepath()"
+          src="https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png"
+          class="rounded-circle mr-lg-4" width="30" height="30" style="margin-right: 3px !important" />
+        <img *ngIf="getProfilepath()" [src]="getProfilepath()" class="rounded-circle mr-lg-4" width="30"
+          height="30" style="margin-right: 3px !important" />
+      </a>
+      <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item text-lowercase" routerLink="/profile">{{
+          getEmail()
+          }}</a>
+  
+        <a class="dropdown-item" (click)="changePasswordPop(ChangePassword)">Change Password</a>
+        <a class="dropdown-item" (click)="logout()">Logout</a>
+      </div>
+    </div> -->
+    <div class="btn-group">
+    <div class="dropdown">
+      <button class="btn btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <img *ngIf="!getProfilepath()"
+          src="https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png"
+          class="rounded-circle mr-lg-4" width="30" height="30" style="margin-right: 3px !important" />
+        <img *ngIf="getProfilepath()" [src]="getProfilepath()" class="rounded-circle mr-lg-4" width="30"
+          height="30" style="margin-right: 3px !important" />
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item text-lowercase" routerLink="/profile">{{UserData.user.Email}}</a>
+  
+        <a class="dropdown-item" (click)="changePasswordPop(ChangePassword)">Change Password</a>
+        <a class="dropdown-item" (click)="logout()">Logout</a>
+      </div>
+    </div>  
+  </div>  
+</div>
+
+
+<ng-template #ChangePassword let-modal>
+  <div class="modal_title d-flex mx-2" style="margin-top: -1px">
+    <div class="pt-1 col d-flex justify-content-center">
+      <div style="margin-left: 30px !important">Change Password</div>
+    </div>
+    <div class="mt-1 mr-2" style="column-width: 15px; cursor: pointer">
+      <!-- <img src="../../../../assets/images/white_cross.png" width="13" (click)="modal.close('Close click')" /> -->
+    </div>
+  </div>
+  <form [formGroup]="PasswordForm" class="px-2 mt-2" (ngSubmit)="changePassword()">
+    <table [formGroup]="PasswordForm" class="table table-sm table-borderless add_table password_table">
+      <tr>
+        <td>
+          <div class="mt-2">Old Password:</div>
+        </td>
+        <td>
+          <div class="d-flex">
+            <input #a type="password" formControlName="OldPassword" class="form-control field" />
+            <div class="pl-2 align-self-center" (click)="a.type = a.type == 'password' ? 'text' : 'password'">
+              <!-- <img *ngIf="a.type == 'password'" src="../../../../assets/images/hidden.png" class="icon" /> -->
+              <!-- <img *ngIf="a.type == 'text'" src="../../../../assets/images/show.png" class="sicon" /> -->
+            </div>
+          </div>
+
+          <p class="error" *ngIf="
+              PasswordForm.get('OldPassword')?.invalid &&
+              PasswordForm.get('OldPassword')?.touched
+            ">
+            Please enter old password!
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="mt-2">New Password:</div>
+        </td>
+        <td>
+          <div class="d-flex">
+            <input #x type="password" formControlName="NewPassword" class="form-control field" />
+            <div class="pl-2 align-self-center" (click)="x.type = x.type == 'password' ? 'text' : 'password'">
+              <!-- <img *ngIf="x.type == 'password'" src="../../../../assets/images/hidden.png" class="icon" /> -->
+              <!-- <img *ngIf="x.type == 'text'" src="../../../../assets/images/show.png" class="sicon" /> -->
+            </div>
+          </div>
+          <p class="error" *ngIf="
+              PasswordForm.get('NewPassword')?.invalid &&
+              PasswordForm.get('NewPassword')?.touched
+            ">
+            Please enter new password!
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="mt-2">Confirm Password:</div>
+        </td>
+        <td>
+          <div class="d-flex">
+            <!-- <input #b type="password" [(ngModel)]="CPassword" [ngModelOptions]="{ standalone: true }" class="form-control field" /> -->
+            <input #b type="password" formControlName="ConfirmPassword" class="form-control field" />
+
+            <div class="pl-2 align-self-center" (click)="b.type = b.type == 'password' ? 'text' : 'password'">
+              <!-- <img *ngIf="b.type == 'password'" src="../../../../assets/images/hidden.png" class="icon" /> -->
+              <!-- <img *ngIf="b.type == 'text'" src="../../../../assets/images/show.png" class="sicon" /> -->
+            </div>
+          </div>
+          <p class="error" *ngIf="
+          (NewPassword.value != ConfirmPassword.value && PasswordForm.get('ConfirmPassword')?.touched) ||
+              (PasswordForm.get('ConfirmPassword')?.invalid &&
+              PasswordForm.get('ConfirmPassword')?.touched) 
+            ">
+            Confirm password not matched!
+          </p>
+
+          <p class="error">{{ ErrMsg }}</p>
+        </td>
+      </tr>
+    </table>
+    <div class="d-flex justify-content-center pb-3">
+      <button class="btn light_button button" (click)="modal.close('Close click')">
+        Cancel
+      </button>
+      <button class="btn btn-primary button ml-2" [disabled]="NewPassword.value != ConfirmPassword.value || !PasswordForm.valid" type="submit">
+        Change
+      </button>
+    </div>
+  </form>
+</ng-template>
