@@ -50,6 +50,18 @@ export class AdminModuleService {
       .pipe(catchError(this.handleError));
   }
 
+  buyStock(data: any) {
+    return this._http
+      .post(this.BaseURL + 'holding/buy_stock', data, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  readStocks(data: any) {
+    return this._http
+      .post(this.BaseURL + 'holding/read_stock', data, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     console.log(error);
     if (

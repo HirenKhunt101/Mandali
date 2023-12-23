@@ -6,6 +6,7 @@ const property = require("./property");
 const user = require("./user");
 const admin = require("./admin");
 const installment = require("./installment");
+const holding = require("./holding");
 
 router.use("/user", user);
 
@@ -14,5 +15,6 @@ router.use("/user", user);
 router.use("/admin", admin);
 router.use("/property", property);
 router.use("/installment", installment);
+router.use("/holding", holding);
 
 module.exports = router;
