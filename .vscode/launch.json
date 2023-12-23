@@ -17,6 +17,10 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
+            "program": "${workspaceFolder}\\mandali-frontend\\mandali\\src\\app\\admin-portal\\admin-portal.service.ts",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
             "program": "${file}"
         }
     ]
