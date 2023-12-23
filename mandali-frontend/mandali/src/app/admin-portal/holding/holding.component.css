@@ -1,0 +1,85 @@
+
+.main-container {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.sub-container {
+    width: 25%;
+    text-align: center;
+    border: 1px solid brown;
+    border-radius: 5px;
+    height: 35px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.active-tab {
+  background: #04AA6D;
+  color: white;
+  border: 0px;
+}
+
+.stock_container2 {
+    margin-top: 30px;
+    margin-left: 20px;
+}
+
+.stock_table {
+  width: 75%;
+}
+
+#month {
+  min-width: 100px;
+}
+
+#year {
+  min-width: 60px;
+}
+
+@media screen and (max-width: 715px) {
+    .subdiv {
+        margin-left: 10px;
+    }
+    .stock_table {
+      width: 100%;
+    }
+    
+    #month {
+      min-width: 80px;
+    }
+
+    #year {
+      min-width: 40px;
+    }
+}
+  
+@media screen and (max-width: 610px) {
+    .inputdiv {
+      font-size: 12px;
+    }
+    .stock_table {
+      font-size: 14px;
+      width: 100%;
+    }
+}
+
+@media screen and (max-width: 458px) {
+    .maindiv {
+      display: flex;
+      flex-direction: column;
+    }
+    .inputdiv {
+      font-size: 12px;
+      margin-top: 10px;
+    }
+    .stock_table {
+      font-size: 12px;
+      width: 100%;
+    }
+}
+  

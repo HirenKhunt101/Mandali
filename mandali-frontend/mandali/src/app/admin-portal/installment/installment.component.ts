@@ -88,14 +88,14 @@ export class InstallmentComponent {
     // ];
   }
 
-  handleDateChange() {
-    const selectedMonth = (document.getElementById('Month') as HTMLSelectElement).value;
-    const selectedYear = (document.getElementById('Year') as HTMLSelectElement).value;
-    const selectedDate = `${selectedYear}-${selectedMonth}`;
-    console.log('Selected Date:', selectedDate);
+  // handleDateChange() {
+  //   const selectedMonth = (document.getElementById('Month') as HTMLSelectElement).value;
+  //   const selectedYear = (document.getElementById('Year') as HTMLSelectElement).value;
+  //   const selectedDate = `${selectedYear}-${selectedMonth}`;
+  //   console.log('Selected Date:', selectedDate);
 
-    // You can perform further actions with the selected date if needed
-  }
+  //   // You can perform further actions with the selected date if needed
+  // }
 
   create_installment() {
     console.log(this.InstallmentForm.value); 

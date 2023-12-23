@@ -109,9 +109,16 @@ module.exports.Penalty = mongoose.model("Penalty", Penalty_Schema);
 
 const Stock_Schema = new Schema(
   {
-    Name: Date,
-    Symbol: String,
+    Quantity: Number,
+    Amount: Number,
+    Date: Date,
     Exchange: String,
+    Symbol: String,
+    StockName: String,
+    MandaliId: {
+      type: "ObjectId",
+      ref: "Mandali",
+    },
   },
   { timestamps: true }
 );

@@ -4,7 +4,7 @@
         <div class="inputdiv d-flex">
             <div class="subdiv">
             <label for="month">Month :</label>
-            <select id="month" formControlName="Month" (change)="handleDateChange()">
+            <select id="month" formControlName="Month">
                 <!-- <option value="Select Month">Select Month</option> -->
                 <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
             </select>
@@ -12,7 +12,7 @@
     
             <div class="subdiv">
             <label for="year">Year :</label>
-            <select id="year" formControlName="Year" (change)="handleDateChange()">
+            <select id="year" formControlName="Year">
                 <!-- <option value="Select Year">Select Year</option> -->
                 <option *ngFor="let year of years" [value]="year">{{ year }}</option>
             </select>
