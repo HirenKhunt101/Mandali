@@ -7,22 +7,26 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthModuleService } from '../auth-module.service';
 import { ModalContentComponent } from '../../modal-content/modal-content.component';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [RouterModule, ReactiveFormsModule, CommonModule],
+  imports: [RouterModule, ReactiveFormsModule, CommonModule, FontAwesomeModule],
   templateUrl: './signup.component.html',
-  styleUrl: './signup.component.css'
+  styleUrl: './signup.component.css',
 })
 export class SignupComponent {
   SignupForm: FormGroup;
-
+  faEye = faEye;
+  faEyeSlash = faEyeSlash;
+  isVisiblePassword1 = false;
+  isVisiblePassword2 = false;
   constructor(
-      private _AMS: AuthModuleService,
-      private _Router: Router,
-      private _ModalService: NgbModal
-    ) {
+    private _AMS: AuthModuleService,
+    private _Router: Router,
+    private _ModalService: NgbModal
+  ) {
     this.SignupForm = new FormGroup({
       FirstName: new FormControl('', [Validators.required]),
       LastName: new FormControl('', [Validators.required]),
@@ -33,16 +37,18 @@ export class SignupComponent {
     });
   }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   signup() {
-    console.log("Signup function", this.SignupForm.value, this.SignupForm.valid);
+    console.log(
+      'Signup function',
+      this.SignupForm.value,
+      this.SignupForm.valid
+    );
     if (this.SignupForm.valid) {
       this._AMS.userSignup(this.SignupForm.value).subscribe(
         (data) => {
-          console.log(data);     
+          console.log(data);
           this._Router.navigate(['/login']);
         },
         (err) => {
@@ -65,5 +71,14 @@ export class SignupComponent {
       if (res) {
       }
     });
+  }
+  
+
+  togglePasswordVisibility(field: string): void {
+    if (field === 'Password') {
+      this.isVisiblePassword1 = !this.isVisiblePassword1;
+    } else if (field === 'ConfirmPassword') {
+      this.isVisiblePassword2 = !this.isVisiblePassword2;
+    }
   }
 }
