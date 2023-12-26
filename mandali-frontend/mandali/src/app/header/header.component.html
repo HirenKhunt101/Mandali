@@ -4,9 +4,9 @@
     <!-- <a routerLink="#home" class="active">Home</a> -->
     <!-- <a (click)="redirectToDashboard()" [ngClass]="{ 'active': activeLink === 'dashboard' }" style="cursor: pointer;">Home</a> -->
     <a routerLink="/admin/dashboard" routerLinkActive="active">Home</a>
-    <a routerLink="/admin/installment" routerLinkActive="active">Create</a>
+    <a routerLink="/admin/installment" routerLinkActive="active">Installment</a>
     <a routerLink="/admin/holding" routerLinkActive="active">Holding</a>
-    <a routerLink="/admin/report" routerLinkActive="active">Report</a>
+    <a routerLink="/admin/realized" routerLinkActive="active">Realized</a>
     <a routerLink="/admin/history" routerLinkActive="active">History</a>
     <a routerLink="/admin/suggestion" routerLinkActive="active">Suggestion</a>
 
@@ -61,7 +61,7 @@
       <!-- <img src="../../../../assets/images/white_cross.png" width="13" (click)="modal.close('Close click')" /> -->
     </div>
   </div>
-  <form [formGroup]="PasswordForm" class="px-2 mt-2" (ngSubmit)="changePassword()">
+  <form [formGroup]="PasswordForm" class="px-2 mt-2">
     <table [formGroup]="PasswordForm" class="table table-sm table-borderless add_table password_table">
       <tr>
         <td>
@@ -130,13 +130,13 @@
         </td>
       </tr>
     </table>
-    <div class="d-flex justify-content-center pb-3">
-      <button class="btn light_button button" (click)="modal.close('Close click')">
-        Cancel
-      </button>
-      <button class="btn btn-primary button ml-2" [disabled]="NewPassword.value != ConfirmPassword.value || !PasswordForm.valid" type="submit">
-        Change
-      </button>
-    </div>
   </form>
+  <div class="d-flex justify-content-center pb-3">
+    <button class="btn light_button button" (click)="modal.close('Close click')">
+      Cancel
+    </button>
+    <button class="btn btn-primary button ml-2" [disabled]="NewPassword.value != ConfirmPassword.value || !PasswordForm.valid" (click)="changePassword()">
+      Change
+    </button>
+  </div>
 </ng-template>

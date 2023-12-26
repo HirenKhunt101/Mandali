@@ -197,14 +197,14 @@
         </tr>
               
       </table>
-      <div class="d-flex justify-content-center pb-3">
-        <button class="btn light_button button" (click)="modal.close('Close click')">
-          Cancel
-        </button>
-        <button class="btn btn-primary button ml-2" type="submit" [disabled]="UserForm.invalid">
-          Add
-        </button>
-      </div>
     </form>
+    <div class="d-flex justify-content-center pb-3">
+      <button class="btn light_button button" (click)="modal.close('Close click')">
+        Cancel
+      </button>
+      <button class="btn btn-primary button ml-2" (click)="add_user()" [disabled]="UserForm.invalid">
+        Add
+      </button>
+    </div>
   </ng-template>
   

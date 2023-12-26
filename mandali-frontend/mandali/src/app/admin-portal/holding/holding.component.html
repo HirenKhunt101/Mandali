@@ -132,14 +132,20 @@
                     <th>Exchange</th>
                     <th>Current</th>
                     <th>Profit</th>
+                    <th>Action</th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let td of PortFolio; let i = index">
                         <td>{{ i+1 }}</td>
                         <td>{{ td.StockName }} ({{ td.Symbol }})</td>
-                        {{ td.Average | number: '1.0-2'}}
+                        <td>{{ td.Average | number: '1.0-2'}}</td>
                         <td>{{ td.Quantity }}</td>
                         <td>{{ td.Exchange }}</td>
+                        <td>{{ 0 }}</td>
+                        <td>{{ 0 }}</td>
+                        <td> 
+                            <button class="btn btn-danger" style="height: fit-content; font-size: small;" (click)="openSellPopup(td)">Sell</button>
+                        </td>
                     </tr>
                 </tbody>
                 </table>
@@ -496,3 +502,66 @@
         </div>
     </div>  
 </div>
+
+
+<ng-template #SellHoldingModal let-modal>
+    <div class="modal_title d-flex mx-2" style="margin-top: -1px">
+      <div class="pt-1 col d-flex justify-content-center">
+        <div style="margin-left: 30px !important">Sell Stock</div>
+      </div>
+      <div class="mt-1 mr-2" style="column-width: 15px; cursor: pointer">
+      </div>
+    </div>
+    <form [formGroup]="SellHoldingForm" class="px-2 mt-2" (ngSubmit)="sell_stock()">
+      <table [formGroup]="SellHoldingForm" class="table table-sm table-borderless add_table password_table">
+        <tr>
+          <td>
+            <div class="mt-2">Name:</div>
+          </td>
+          <td>
+            <div class="d-flex">
+              <input #a type="text" formControlName="StockName" class="form-control field" readonly />
+            </div>
+          </td>
+        </tr>
+        <tr>
+            <td>
+              <div class="mt-2">Symbol:</div>
+            </td>
+            <td>
+              <div class="d-flex">
+                <input #a type="text" formControlName="Symbol" class="form-control field" readonly />
+              </div>
+            </td>
+          </tr>
+        <tr>
+          <td>
+            <div class="mt-2">Selling Price:</div>
+          </td>
+          <td>
+            <div class="d-flex">
+              <input #x type="number" formControlName="SellingPrice" class="form-control field" />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="mt-2">Selling Quantity:</div>
+          </td>
+          <td>
+            <div class="d-flex">
+              <input #b type="number" formControlName="SellingQuantity" class="form-control field" />
+            </div>
+          </td>
+        </tr>
+      </table>
+    </form>
+    <div class="d-flex justify-content-center pb-3">
+        <button class="btn light_button button" (click)="modal.close('Close click')">
+          Cancel
+        </button>
+        <button class="btn btn-primary button ml-2" [disabled]="!SellHoldingForm.valid" (click)="sell_stock()">
+          Sell
+        </button>
+      </div>
+  </ng-template>

@@ -109,8 +109,11 @@ module.exports.Penalty = mongoose.model("Penalty", Penalty_Schema);
 
 const Stock_Schema = new Schema(
   {
-    Quantity: Number,
-    Amount: Number,
+    Transaction: [
+      {
+        type: Object,
+      },
+    ],
     Date: Date,
     Exchange: String,
     Symbol: String,
@@ -137,18 +140,24 @@ const Transaction_Schema = new Schema(
 );
 module.exports.Transaction = mongoose.model("Transaction", Transaction_Schema);
 
-const Released_Schema = new Schema(
+const Realized_Schema = new Schema(
   {
-    StockId: {
+    Transaction: [
+      {
+        type: Object,
+      },
+    ],
+    Date: Date,
+    Symbol: String,
+    StockName: String,
+    MandaliId: {
       type: "ObjectId",
-      ref: "Stock",
+      ref: "Mandali",
     },
-    Quantity: Number,
-    Amount: Number,
   },
   { timestamps: true }
 );
-module.exports.Realized = mongoose.model("Realized", Released_Schema);
+module.exports.Realized = mongoose.model("Realized", Realized_Schema);
 
 const History_Schema = new Schema(
   {
