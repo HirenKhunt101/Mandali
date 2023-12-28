@@ -6,6 +6,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { HeaderComponent } from './header/header.component';
 import { LoaderComponent } from './loader/loader.component';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -16,15 +17,6 @@ import { LoaderComponent } from './loader/loader.component';
 export class AppComponent {
   title = 'mandali';
 
-  constructor(private modalService: NgbModal) {
-  }
-
-  // public open(modal: any): void {
-  //   this.modalService.open(modal);
-  // }
-
-  open() {
-    console.log(123);
-    this.modalService.open("1");
+  constructor() {
   }
 }

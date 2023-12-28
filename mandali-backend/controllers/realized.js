@@ -122,12 +122,12 @@ module.exports = {
   read_realized: read_realized,
 };
 
-// Quantity Amount
+//Amount  Quantity
 // 100       100
-// 200       150
-// 150       100
+// 150       200
+// 100       150
 
-// Quantity Amount
-// 50        200
-// 200       300
-// 200       350
+// Amount Quantity
+// 200    50
+// 300    200
+// 350    200

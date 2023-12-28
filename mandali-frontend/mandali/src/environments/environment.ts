@@ -7,6 +7,15 @@ export const environment = {
   url: 'http://localhost:4200/',
   backendurl: 'http://localhost:3001/mandali/',
   DECRYPT: "put32charactershereeeeeeeeeeeee!",
+  firebaseConfig: {
+    apiKey: "AIzaSyC5yPAlq8-eqPGF7ip4cuws9VSPsimewIA",
+    authDomain: "mandali-fbf84.firebaseapp.com",
+    projectId: "mandali-fbf84",
+    storageBucket: "mandali-fbf84.appspot.com",
+    messagingSenderId: "595595593551",
+    appId: "1:595595593551:web:f47cbf5a7e8e7f5f6b273a",
+    measurementId: "G-X4V4BL63LS"
+  }
 };
 
 /*
