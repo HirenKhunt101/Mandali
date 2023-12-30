@@ -30,7 +30,7 @@ export class SuggestionComponent {
 
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.UserData = new UserData().getData('userdata');
     this._ADMS.readAnalysis({
       MandaliId: this.UserData.user.MandaliId,
@@ -54,9 +54,27 @@ export class SuggestionComponent {
     });
   }
 
-  add_analysis() {
+  async add_analysis(e: any, event: any) {
     console.log(this.StockForm.value);
-    this.uploadFile(this.StockForm.get('StockImage')?.value);
+    event.preventDefault();
+    const file = e.files[0];
+    const downloadURL = await this.uploadFile(file);
+    
+    if(downloadURL) {
+      this.StockForm.get('ImageUrl')?.setValue(downloadURL);
+      this._ADMS.createAnalysis(this.StockForm.value).subscribe(
+        (data: any) => {
+          console.log(data);
+          this.openErrorMsg('Analysis uploaded successfully');
+          this.ngOnInit();
+        },
+        (e) => {
+          console.log(e);
+          this.openErrorMsg('Error in uploading image');
+        }
+      );
+    } else {
+    }
   }
 
   // uploadFile(input: HTMLInputElement) {
@@ -75,54 +93,28 @@ export class SuggestionComponent {
   //   }
   // }
 
-  uploadFile(input: HTMLInputElement) {
-    if (!input.files || input.files.length === 0) return;
+  async uploadFile(file: any) {
   
-    const files: FileList = input.files;
-  
-    for (let i = 0; i < files.length; i++) {
-      const file = files.item(i);
-      if (file && file.type.startsWith('image/')) {
-        const randomString = Math.random().toString(36).substring(2);
-        const filePath = `${file.name}-${randomString}`;
-        const storageRef = ref(this.storage, filePath);
-        const uploadTask = uploadBytesResumable(storageRef, file);
-  
-        uploadTask.on(
-          'state_changed',
-          (snapshot) => {
-            // Handle progress if needed
-          },
-          (error) => {
-            this.openErrorMsg('Error in uploading image');
-          },
-          () => {
-            getDownloadURL(storageRef)
-              .then((downloadURL) => {
-                this.StockForm.get('ImageUrl')?.setValue(downloadURL);
-                this._ADMS.createAnalysis(this.StockForm.value).subscribe(
-                  (data: any) => {
-                    console.log(data);
-                    // Move the success message here
-                    this.openErrorMsg('Successfully image uploaded');
-                    this.ngOnInit();
-                  },
-                  (e) => {
-                    console.log(e);
-                    this.openErrorMsg('Error in uploading image');
-                  }
-                );
-                this.openErrorMsg('Successfully image uploaded');
-              })
-              .catch((error) => {
-                this.openErrorMsg('Error in uploading image');
-              });
-          }
-        );
-      } else {
-        this.openErrorMsg('Invalid image uploaded');
-      }
+    if (file && file.type.startsWith('image/')) {
+      const randomString = Math.random().toString(36).substring(2);
+      const filePath = `${file.name}-${randomString}`;
+      const storageRef = ref(this.storage, filePath);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+        },
+        (error) => {
+          this.openErrorMsg('Error in uploading image');
+        });
+
+        await uploadTask;
+        return getDownloadURL(uploadTask.snapshot.ref);
+    } else {
+      this.openErrorMsg('Please upload valid image');
     }
+    return;
   }
   
 
