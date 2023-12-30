@@ -170,3 +170,21 @@ const History_Schema = new Schema(
   { timestamps: true }
 );
 module.exports.History = mongoose.model("History", History_Schema);
+
+const Analysis_Schema = new Schema(
+  {
+    Notes: String,
+    StockName: String,
+    ImageUrl: String,
+    MandaliId: {
+      type: "ObjectId",
+      ref: "Mandali",
+    },
+    UserId: {
+      type: "ObjectId",
+      ref: "User",
+    },
+  },
+  { timestamps: true }
+);
+module.exports.Analysis = mongoose.model("Analysis", Analysis_Schema);

@@ -74,6 +74,18 @@ export class AdminModuleService {
       .pipe(catchError(this.handleError));
   }
 
+  createAnalysis(data: any) {
+    return this._http
+      .post(this.BaseURL + 'suggestion/create_analysis', data, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+  
+  readAnalysis(data: any) {
+    return this._http
+      .post(this.BaseURL + 'suggestion/read_analysis', data, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     console.log(error);
     if (

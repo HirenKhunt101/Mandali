@@ -1,0 +1,92 @@
+<!-- <div class="stock_container1 mt-3">
+    <form [formGroup]="StockForm" (ngSubmit)="add_analysis()">
+    <div class="custom_container px-3 pb-3">
+        <div class="row custom_label pt-3">
+            <div class="col">
+            <div>Choose a File:</div>
+            <div>
+                <input type="file" class="form-control file" formControlName="StockImage" />
+            </div>
+            </div>
+            <div class="col">
+                <div>Stock Name:</div>
+                <div>
+                    <input type="text" formControlName="StockName" class="form-control field" style="background-color: white">
+                </div>
+            </div>
+            <div class="col">
+                <div>Notes:</div>
+                <div>
+                    <input type="text" formControlName="Notes" class="form-control field" style="background-color: white">
+                </div>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-primary button mt-4" [disabled]="StockForm.invalid">
+                    ADD
+                </button>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+
+<h1>Storage</h1>
+<label for="fileUpload">Choose a File</label>
+<input id="fileUpload" type="file" #upload>
+<button (click)="uploadFile(upload)">Upload</button> -->
+
+
+<div class="stock_container1 mt-3">
+    <form [formGroup]="StockForm">
+    <div class="custom_container px-3 pb-3">
+        <div class="row custom_label pt-3">
+            <div class="col">
+                <!-- <label for="fileUpload">Select Image</label> -->
+                <input id="fileUpload" type="file" #upload>
+            </div>
+            <div class="col">
+                <!-- <div>Stock Name:</div> -->
+                <div>
+                    <input type="text" formControlName="StockName" placeholder="Enter Stock Name" class="form-control field" style="background-color: white">
+                </div>
+            </div>
+            <div class="col">
+                <!-- <div>Notes:</div> -->
+                <div>
+                    <input type="text" formControlName="Notes" placeholder="Enter Notes" class="form-control field" style="background-color: white">
+                </div>
+            </div>
+            <div class="col">
+                <button class="btn btn-success" (click)="uploadFile(upload)">Upload</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+
+<section style="background-color: #eee;">
+    <div class="text-center container py-5">
+      <div class="row">
+        <div *ngFor="let analysis of AnalysisDetail;" class="col-lg-4 col-md-12 mb-4">
+          <div class="card">
+            <div class="bg-image">
+                <a href="{{ analysis.ImageUrl }}" target="_blank">
+                    <img src="{{ analysis.ImageUrl }}" class="w-100 analysis-img" />
+                  </a>
+            </div>
+            <div class="card-body">
+              <!-- <a href="" class="text-reset"> -->
+                <h5 class="card-title mb-1">{{analysis.StockName}}</h5>
+              <!-- </a> -->
+              <!-- <a href="" class="text-reset"> -->
+                <p class="mb-1">{{analysis.Notes}}</p>
+              <!-- </a> -->
+              <h6 class="mb-1">Analysis by - {{analysis.Member_Name}}</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

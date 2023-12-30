@@ -1,7 +1,6 @@
 const mongo = require("../database/database.service");
 const schema = require("../database/database.schema");
 const mongoose = require("mongoose");
-const { sell_stock, buy_stock } = require("./holding");
 
 const User = schema.User;
 const Mandali = schema.Mandali;

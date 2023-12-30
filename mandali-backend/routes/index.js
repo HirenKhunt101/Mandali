@@ -8,6 +8,7 @@ const admin = require("./admin");
 const installment = require("./installment");
 const holding = require("./holding");
 const realized = require("./realized");
+const suggestion = require("./suggestion");
 
 router.use("/user", user);
 
@@ -18,5 +19,6 @@ router.use("/property", property);
 router.use("/installment", installment);
 router.use("/holding", holding);
 router.use("/realized", realized);
+router.use("/suggestion", suggestion);
 
 module.exports = router;
