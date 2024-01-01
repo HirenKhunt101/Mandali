@@ -43,9 +43,8 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item text-lowercase" routerLink="/profile">{{UserData.user.Email}}</a>
-  
-        <a class="dropdown-item" (click)="changePasswordPop(ChangePassword)">Change Password</a>
-        <a class="dropdown-item" (click)="logout()">Logout</a>
+        <a class="dropdown-item" style="cursor: pointer;" (click)="changePasswordPop(ChangePassword)">Change Password</a>
+        <a class="dropdown-item" style="cursor: pointer;" (click)="logout()">Logout</a>
       </div>
     </div>  
   </div>  

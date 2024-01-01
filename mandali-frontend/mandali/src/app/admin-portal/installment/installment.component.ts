@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -16,6 +16,8 @@ import { ModalContentComponent } from '../../modal-content/modal-content.compone
   styleUrl: './installment.component.css'
 })
 export class InstallmentComponent {
+  @ViewChild('ConfirmationModal', { static: true }) ConfirmationModal !: ElementRef;
+
   InstallmentForm !: FormGroup;
   PendingRequest !: any[];
   InstallmentDetails !: any[];
@@ -104,6 +106,7 @@ export class InstallmentComponent {
     ).subscribe(
       (data: any) => {
         console.log(data);  
+        this._ModalService.dismissAll();
         this.openErrorMsg(data.statusMessage);
         this.ngOnInit();  
       },
@@ -131,6 +134,14 @@ export class InstallmentComponent {
         this.ngOnInit();  
       }
     );
+  }
+
+  openConfirmationModal() {
+    this._ModalService.open(this.ConfirmationModal, {
+      centered: true,
+      backdrop: 'static',
+      keyboard: false,
+    });
   }
 
   openErrorMsg(str: any) {

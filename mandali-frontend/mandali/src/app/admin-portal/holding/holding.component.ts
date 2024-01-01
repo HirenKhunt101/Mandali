@@ -18,6 +18,7 @@ import { StockList } from '../../static-data/static'
 })
 export class HoldingComponent {
   @ViewChild('SellHoldingModal', { static: true }) SellHoldingModal !: ElementRef;
+  @ViewChild('ConfirmationModal', { static: true }) ConfirmationModal !: ElementRef;
 
   StockForm !: FormGroup;
   UserData: any;
@@ -130,18 +131,13 @@ export class HoldingComponent {
     this.Total =  amount * quantity;
   }
 
-  buy_stock() {
-    
-    let index = this.StockForm.get('StockIndex')?.value;
-    this.StockForm.get('StockName')?.setValue(this.StocksList[index].name);
-    this.StockForm.get('Symbol')?.setValue(this.StocksList[index].symbol);
-    console.log(this.StockForm.value);    
-
+  buy_stock() {   
     this._ADMS.buyStock(
       this.StockForm.value
     ).subscribe(
       (data: any) => {
         console.log(data);  
+        this._ModalService.dismissAll();
         this.openErrorMsg(data.statusMessage);
         this.ngOnInit();  
       },
@@ -152,6 +148,18 @@ export class HoldingComponent {
       }
     );
   } 
+
+  openConfirmationModal() {
+    let index = this.StockForm.get('StockIndex')?.value;
+    this.StockForm.get('StockName')?.setValue(this.StocksList[index].name);
+    this.StockForm.get('Symbol')?.setValue(this.StocksList[index].symbol);
+    
+    this._ModalService.open(this.ConfirmationModal, {
+      centered: true,
+      backdrop: 'static',
+      keyboard: false,
+    });
+  }
 
   change_active_tab(CurrentTab: any) {
     this.ActiveTab = CurrentTab;

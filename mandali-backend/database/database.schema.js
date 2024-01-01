@@ -86,6 +86,7 @@ const Pending_installment_Schema = new Schema(
       type: "ObjectId",
       ref: "Mandali",
     },
+    Penalty: Boolean,
   },
   { timestamps: true }
 );
@@ -102,6 +103,10 @@ const Penalty_Schema = new Schema(
       ref: "User",
     },
     Amount: Number,
+    MandaliId: {
+      type: "ObjectId",
+      ref: "Mandali",
+    },
   },
   { timestamps: true }
 );

@@ -36,7 +36,7 @@
 
 <div *ngIf="ActiveTab == 'stock_tab'">
     <div class="stock_container1 mt-3">
-        <form [formGroup]="StockForm" (ngSubmit)="buy_stock()">
+        <form [formGroup]="StockForm" (ngSubmit)="openConfirmationModal()">
         <div class="custom_container px-3 pb-3">
             <div class="row custom_label pt-3">
                 <div class="col">
@@ -156,351 +156,14 @@
 
 
 <div *ngIf="ActiveTab == 'mutual_fund_tab'">
-    <p>mutual fund works</p>
-    <div class="stock_container1 mt-3">
-        <form [formGroup]="StockForm" (ngSubmit)="buy_stock()">
-        <div class="custom_container px-3 pb-3">
-            <div class="row custom_label pt-3">
-                <div class="col">
-                <div>Date:</div>
-                <div>
-                    <input type="date" class="form-control date" style="font-weight: 400"
-                        value="{{StockForm.controls['Date'].value}}"
-                    />
-                    <!-- <p class="error" *ngIf="
-                        StockForm.controls['Date'].value.invalid &&
-                        StockForm.controls['Date'].value.touched
-                        ">
-                        Please enter valid date!
-                    </p> -->
-                </div>
-                </div>
-                <div class="col">
-                    <div>Name:</div>
-                    <div class="mt-1">
-                        <select id="stock" formControlName="StockIndex">
-                            <option value="">Select Stock</option>
-                            <option *ngFor="let stock of StocksList; let i = index" [value]="i">{{ stock.name }} ({{stock.symbol}})</option>
-                        </select>
-                        <!-- <select id="month" formControlName="Month" (change)="handleDateChange()">
-                            <option *ngFor="let month of months" [value]="month.value">{{ month.  }}</option>
-                        </select> -->
-                    </div>
-                </div>
-                <div class="col">
-                    <div>Exchange:</div>
-                    <div class="exchange-radio mt-1">
-                        <label for="BSE">BSE</label>
-                        <input style="margin-left: 2px;" type="radio" value="BSE" formControlName="Exchange" required>
-            
-                        <label style="margin-left: 6px;" for="NSE">NSE</label>
-                        <input style="margin-left: 2px;" type="radio" value="NSE" formControlName="Exchange" required>
-                    </div>
-                </div>
-                <div class="col">
-                    <div>Amount:</div>
-                    <div>
-                        <input type="number" formControlName="Amount" class="form-control field" style="background-color: white" (input)="updateTotal()">
-                        <!-- <p class="error" *ngIf="
-                            CreateWalkInForm.controls.WalkInCost['controls']['Nights']
-                            .invalid &&
-                            CreateWalkInForm.controls.WalkInCost['controls']['Nights']
-                            .touched
-                        ">
-                        Please enter valid Night(s)!
-                        </p> -->
-                    </div>
-                </div>
-                <div class="col">
-                    <div>Quantity:</div>
-                    <div>
-                        <input type="number" formControlName="Quantity" class="form-control field" style="background-color: white" (input)="updateTotal()">
-                        <!-- <p class="error" *ngIf="
-                            CreateWalkInForm.controls.WalkInCost['controls']['Nights']
-                            .invalid &&
-                            CreateWalkInForm.controls.WalkInCost['controls']['Nights']
-                            .touched
-                        ">
-                        Please enter valid Night(s)!
-                        </p> -->
-                    </div>
-                </div>
-                <div class="col">
-                    <div>Total:</div>
-                    <div>
-                        <input type="number" class="form-control field" style="background-color: white" [value]="Total" disabled>
-                    </div>
-                </div>
-                <div class="col">
-                    <button type="submit" class="btn btn-primary button mt-4" [disabled]="StockForm.invalid">
-                        ADD
-                    </button>
-                </div>
-            </div>
-        </div>
-        </form>
-    </div>
-
-    <div>
-        <div class="stock_container2">
-            <h4>Portfolio</h4>
-            <div class="all-stock" style="overflow-x: auto">
-                <table class="table-sm table-borderless stock_table">
-                <thead>
-                    <th>No.</th>
-                    <th>Name</th>
-                    <th>Amount</th>
-                    <th>Quantity</th>
-                    <th>Exchange</th>
-                    <th>Date</th>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let td of PortFolio; let i = index">
-                        <td>{{ i+1 }}</td>
-                        <td>{{ td.StockName }} ({{td.Symbol}})</td>
-                        <td>{{ td.Amount }}</td>
-                        <td>{{ td.Quantity }}</td>
-                        <td>{{ td.Exchange }}</td>
-                        <td>{{ td.Date | date }}</td>
-                    </tr>
-                </tbody>
-                </table>
-            </div>
-        </div>
-    </div>  
 </div>
 
 
 <div *ngIf="ActiveTab == 'ipo_tab'">
-    <p>ipo works</p>
-    <div class="stock_container1 mt-3">
-        <form [formGroup]="StockForm" (ngSubmit)="buy_stock()">
-        <div class="custom_container px-3 pb-3">
-            <div class="row custom_label pt-3">
-                <div class="col">
-                <div>Date:</div>
-                <div>
-                    <input type="date" class="form-control date" style="font-weight: 400"
-                        value="{{StockForm.controls['Date'].value}}"
-                    />
-                    <!-- <p class="error" *ngIf="
-                        StockForm.controls['Date'].value.invalid &&
-                        StockForm.controls['Date'].value.touched
-                        ">
-                        Please enter valid date!
-                    </p> -->
-                </div>
-                </div>
-                <div class="col">
-                    <div>Name:</div>
-                    <div class="mt-1">
-                        <select id="stock" formControlName="StockIndex">
-                            <option value="">Select Stock</option>
-                            <option *ngFor="let stock of StocksList; let i = index" [value]="i">{{ stock.name }} ({{stock.symbol}})</option>
-                        </select>
-                        <!-- <select id="month" formControlName="Month" (change)="handleDateChange()">
-                            <option *ngFor="let month of months" [value]="month.value">{{ month.  }}</option>
-                        </select> -->
-                    </div>
-                </div>
-                <div class="col">
-                    <div>Exchange:</div>
-                    <div class="exchange-radio mt-1">
-                        <label for="BSE">BSE</label>
-                        <input style="margin-left: 2px;" type="radio" value="BSE" formControlName="Exchange" required>
-            
-                        <label style="margin-left: 6px;" for="NSE">NSE</label>
-                        <input style="margin-left: 2px;" type="radio" value="NSE" formControlName="Exchange" required>
-                    </div>
-                </div>
-                <div class="col">
-                    <div>Amount:</div>
-                    <div>
-                        <input type="number" formControlName="Amount" class="form-control field" style="background-color: white" (input)="updateTotal()">
-                        <!-- <p class="error" *ngIf="
-                            CreateWalkInForm.controls.WalkInCost['controls']['Nights']
-                            .invalid &&
-                            CreateWalkInForm.controls.WalkInCost['controls']['Nights']
-                            .touched
-                        ">
-                        Please enter valid Night(s)!
-                        </p> -->
-                    </div>
-                </div>
-                <div class="col">
-                    <div>Quantity:</div>
-                    <div>
-                        <input type="number" formControlName="Quantity" class="form-control field" style="background-color: white" (input)="updateTotal()">
-                        <!-- <p class="error" *ngIf="
-                            CreateWalkInForm.controls.WalkInCost['controls']['Nights']
-                            .invalid &&
-                            CreateWalkInForm.controls.WalkInCost['controls']['Nights']
-                            .touched
-                        ">
-                        Please enter valid Night(s)!
-                        </p> -->
-                    </div>
-                </div>
-                <div class="col">
-                    <div>Total:</div>
-                    <div>
-                        <input type="number" class="form-control field" style="background-color: white" [value]="Total" disabled>
-                    </div>
-                </div>
-                <div class="col">
-                    <button type="submit" class="btn btn-primary button mt-4" [disabled]="StockForm.invalid">
-                        ADD
-                    </button>
-                </div>
-            </div>
-        </div>
-        </form>
-    </div>
-
-    <div>
-        <div class="stock_container2">
-            <h4>Portfolio</h4>
-            <div class="all-stock" style="overflow-x: auto">
-                <table class="table-sm table-borderless stock_table">
-                <thead>
-                    <th>No.</th>
-                    <th>Name</th>
-                    <th>Amount</th>
-                    <th>Quantity</th>
-                    <th>Exchange</th>
-                    <th>Date</th>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let td of PortFolio; let i = index">
-                        <td>{{ i+1 }}</td>
-                        <td>{{ td.StockName }} ({{td.Symbol}})</td>
-                        <td>{{ td.Amount }}</td>
-                        <td>{{ td.Quantity }}</td>
-                        <td>{{ td.Exchange }}</td>
-                        <td>{{ td.Date | date }}</td>
-                    </tr>
-                </tbody>
-                </table>
-            </div>
-        </div>
-    </div>  
 </div>
 
 
 <div *ngIf="ActiveTab == 'sip_tab'">
-    <p>sip works</p>
-
-    <div class="stock_container1 mt-3">
-        <form [formGroup]="StockForm" (ngSubmit)="buy_stock()">
-        <div class="custom_container px-3 pb-3">
-            <div class="row custom_label pt-3">
-                <div class="col">
-                <div>Date:</div>
-                <div>
-                    <input type="date" class="form-control date" style="font-weight: 400"
-                        value="{{StockForm.controls['Date'].value}}"
-                    />
-                    <!-- <p class="error" *ngIf="
-                        StockForm.controls['Date'].value.invalid &&
-                        StockForm.controls['Date'].value.touched
-                        ">
-                        Please enter valid date!
-                    </p> -->
-                </div>
-                </div>
-                <div class="col">
-                    <div>Name:</div>
-                    <div class="mt-1">
-                        <select id="stock" formControlName="StockIndex">
-                            <option value="">Select Stock</option>
-                            <option *ngFor="let stock of StocksList; let i = index" [value]="i">{{ stock.name }} ({{stock.symbol}})</option>
-                        </select>
-                        <!-- <select id="month" formControlName="Month" (change)="handleDateChange()">
-                            <option *ngFor="let month of months" [value]="month.value">{{ month.  }}</option>
-                        </select> -->
-                    </div>
-                </div>
-                <div class="col">
-                    <div>Exchange:</div>
-                    <div class="exchange-radio mt-1">
-                        <label for="BSE">BSE</label>
-                        <input style="margin-left: 2px;" type="radio" value="BSE" formControlName="Exchange" required>
-            
-                        <label style="margin-left: 6px;" for="NSE">NSE</label>
-                        <input style="margin-left: 2px;" type="radio" value="NSE" formControlName="Exchange" required>
-                    </div>
-                </div>
-                <div class="col">
-                    <div>Amount:</div>
-                    <div>
-                        <input type="number" formControlName="Amount" class="form-control field" style="background-color: white" (input)="updateTotal()">
-                        <!-- <p class="error" *ngIf="
-                            CreateWalkInForm.controls.WalkInCost['controls']['Nights']
-                            .invalid &&
-                            CreateWalkInForm.controls.WalkInCost['controls']['Nights']
-                            .touched
-                        ">
-                        Please enter valid Night(s)!
-                        </p> -->
-                    </div>
-                </div>
-                <div class="col">
-                    <div>Quantity:</div>
-                    <div>
-                        <input type="number" formControlName="Quantity" class="form-control field" style="background-color: white" (input)="updateTotal()">
-                        <!-- <p class="error" *ngIf="
-                            CreateWalkInForm.controls.WalkInCost['controls']['Nights']
-                            .invalid &&
-                            CreateWalkInForm.controls.WalkInCost['controls']['Nights']
-                            .touched
-                        ">
-                        Please enter valid Night(s)!
-                        </p> -->
-                    </div>
-                </div>
-                <div class="col">
-                    <div>Total:</div>
-                    <div>
-                        <input type="number" class="form-control field" style="background-color: white" [value]="Total" disabled>
-                    </div>
-                </div>
-                <div class="col">
-                    <button type="submit" class="btn btn-primary button mt-4" [disabled]="StockForm.invalid">
-                        ADD
-                    </button>
-                </div>
-            </div>
-        </div>
-        </form>
-    </div>
-
-    <div>
-        <div class="stock_container2">
-            <h4>Portfolio</h4>
-            <div class="all-stock" style="overflow-x: auto">
-                <table class="table-sm table-borderless stock_table">
-                <thead>
-                    <th>No.</th>
-                    <th>Name</th>
-                    <th>Amount</th>
-                    <th>Quantity</th>
-                    <th>Exchange</th>
-                    <th>Date</th>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let td of PortFolio; let i = index">
-                        <td>{{ i+1 }}</td>
-                        <td>{{ td.StockName }} ({{td.Symbol}})</td>
-                        <td>{{ td.Amount }}</td>
-                        <td>{{ td.Quantity }}</td>
-                        <td>{{ td.Exchange }}</td>
-                        <td>{{ td.Date | date }}</td>
-                    </tr>
-                </tbody>
-                </table>
-            </div>
-        </div>
-    </div>  
 </div>
 
 
@@ -565,3 +228,92 @@
         </button>
       </div>
   </ng-template>
+
+
+<ng-template #ConfirmationModal let-modal>
+    <div class="modal_title d-flex mx-2" style="margin-top: -1px">
+        <div class="pt-1 col d-flex justify-content-center">
+        <h4 class="confirm text-center my-4 camel-case">
+            Are you sure want to buy stock?
+            </h4>
+        </div>
+        <div class="mt-1 mr-2" style="column-width: 15px; cursor: pointer">
+        </div>
+    </div>
+    <form [formGroup]="StockForm" class="px-2 mt-2">
+        <table [formGroup]="StockForm" class="table table-sm table-borderless add_table password_table">
+        <tr>
+            <td>
+                <div class="mt-2">Date :</div>
+            </td>
+            <td>
+            <div class="d-flex">
+                <input type="text" formControlName="Date" class="form-control field" readonly />
+            </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="mt-2">StockName :</div>
+            </td>
+            <td>
+                <div class="d-flex">
+                <input type="text" formControlName="StockName" class="form-control field" readonly />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="mt-2">Symbol :</div>
+            </td>
+            <td>
+                <div class="d-flex">
+                <input type="text" formControlName="Symbol" class="form-control field" readonly />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="mt-2">Amount :</div>
+            </td>
+            <td>
+            <div class="d-flex">
+                <input type="number" formControlName="Amount" class="form-control field" />
+            </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="mt-2">Quantity :</div>
+            </td>
+            <td>
+            <div class="d-flex">
+                <input type="number" formControlName="Quantity" class="form-control field" />
+            </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="mt-2">Exchange :</div>
+            </td>
+            <td>
+            <div class="d-flex">
+                <label for="NSE">NSE</label>
+                <input type="radio" value="NSE" formControlName="Exchange">
+            
+                <label style="margin-left: 6px;" for="BSE">BSE</label>
+                <input style="margin-left: 2px;" type="radio" value="BSE" formControlName="Exchange">
+            </div>
+            </td>
+        </tr>
+        </table>
+    </form>
+    <div class="d-flex justify-content-center pb-3">
+    <button class="btn light_button button" (click)="modal.close('Close click')">
+        Cancel
+    </button>
+    <button class="btn btn-primary button ml-2" [disabled]="!StockForm.valid" (click)="buy_stock()">
+        Add
+    </button>
+    </div>
+</ng-template>

@@ -1,5 +1,5 @@
 <div >
-    <form [formGroup]="InstallmentForm" (ngSubmit)="create_installment()">
+    <form [formGroup]="InstallmentForm" (ngSubmit)="openConfirmationModal()">
         <div class="d-flex maindiv">
         <div class="inputdiv d-flex">
             <div class="subdiv">
@@ -24,10 +24,10 @@
                 <input type="text" id="amount" formControlName="Amount" />
             </div>
     
-            <!-- <div class="subdiv">
+            <div class="subdiv">
                 <input type="checkbox" class="form-check-input" formControlName="Penalty" />
-                <label class="form-check-label ml-1" style="">Penalty</label>
-            </div> -->
+                <label class="form-check-label ml-1">Penalty</label>
+            </div>
     
             <div class="subdiv ">
                 <button type="submit" class="btn btn-primary button ml-2" [disabled]="InstallmentForm.invalid">
@@ -86,6 +86,7 @@
                 <th>No.</th>
                 <th>Name</th>
                 <th>Date</th>
+                <th>Type</th>
                 <th>Amount</th>
               </thead>
               <tbody>
@@ -93,6 +94,7 @@
                     <td>{{ i+1 }}</td>
                     <td>{{ td.Member_Name }}</td>
                     <td>{{ td.Date }}</td>
+                    <td>{{ td.Type }}</td>
                     <td>{{ td.Amount }}</td>
                 </tr>
               </tbody>
@@ -100,3 +102,67 @@
           </div>
     </div>
 </div>
+
+  <ng-template #ConfirmationModal let-modal>
+    <div class="modal_title d-flex mx-2" style="margin-top: -1px">
+      <div class="pt-1 col d-flex justify-content-center">
+        <h4 class="confirm text-center my-4 camel-case">
+            Are you sure want to create installment?
+          </h4>
+      </div>
+      <div class="mt-1 mr-2" style="column-width: 15px; cursor: pointer">
+      </div>
+    </div>
+    <form [formGroup]="InstallmentForm" class="px-2 mt-2">
+      <table [formGroup]="InstallmentForm" class="table table-sm table-borderless add_table password_table">
+        <tr>
+          <td>
+            <div class="mt-2">Month :</div>
+          </td>
+          <td>
+            <div class="d-flex">
+              <input #a type="text" formControlName="Month" class="form-control field" readonly />
+            </div>
+          </td>
+        </tr>
+        <tr>
+            <td>
+              <div class="mt-2">Year :</div>
+            </td>
+            <td>
+              <div class="d-flex">
+                <input #a type="text" formControlName="Year" class="form-control field" readonly />
+              </div>
+            </td>
+          </tr>
+        <tr>
+          <td>
+            <div class="mt-2">Amount :</div>
+          </td>
+          <td>
+            <div class="d-flex">
+              <input #x type="number" formControlName="Amount" class="form-control field" />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="mt-2">Penalty :</div>
+          </td>
+          <td>
+            <div class="d-flex">
+                <input type="checkbox" class="form-check-input" formControlName="Penalty" />
+            </div>
+          </td>
+        </tr>
+      </table>
+    </form>
+    <div class="d-flex justify-content-center pb-3">
+        <button class="btn light_button button" (click)="modal.close('Close click')">
+          Cancel
+        </button>
+        <button class="btn btn-primary button ml-2" [disabled]="!InstallmentForm.valid" (click)="create_installment()">
+          Add
+        </button>
+      </div>
+  </ng-template>

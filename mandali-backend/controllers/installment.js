@@ -9,6 +9,7 @@ const User = schema.User;
 const Mandali = schema.Mandali;
 const Installment = schema.Installment;
 const PendingInstallment = schema.Pending_installment;
+const Penalty = schema.Penalty;
 
 let create_installment = async function (req, res) {
   let body = req.body;
@@ -22,8 +23,13 @@ let create_installment = async function (req, res) {
 
     body.Date = StartDate;
     if (body.UserType == "admin") {
-      let installment_detail = new Installment(body);
-      await installment_detail.save();
+      if (body.Penalty) {
+        let penalty_detail = new Penalty(body);
+        await penalty_detail.save();
+      } else {
+        let installment_detail = new Installment(body);
+        await installment_detail.save();
+      }
     } else {
       let pending_installment = new PendingInstallment(body);
       await pending_installment.save();
@@ -47,162 +53,123 @@ let read_installment = async function (req, res) {
   let body = req.body;
   let data = {};
   try {
-    if (body.UserType == "admin") {
-      [data.Installment, data.pending_installment] = await Promise.all([
-        Installment.aggregate([
-          {
-            $match: {
-              MandaliId: new mongoose.Types.ObjectId(body.MandaliId),
-            },
-          },
-          // {
-          //   '$skip': 0
-          // }, {
-          //   '$limit': 20
-          // },
-          {
-            $lookup: {
-              from: "users",
-              localField: "UserId",
-              foreignField: "_id",
-              as: "user_details",
-            },
-          },
-          {
-            $unwind: {
-              path: "$user_details",
-            },
-          },
-          {
-            $project: {
-              Member_Name: "$user_details.Username",
-              Amount: "$Amount",
-              Date: {
-                $dateToString: {
-                  format: "%m-%Y",
-                  date: "$Date",
-                },
-              },
-            },
-          },
-        ]),
-        PendingInstallment.aggregate([
-          {
-            $match: {
-              MandaliId: new mongoose.Types.ObjectId(body.MandaliId),
-            },
-          },
-          // {
-          //   '$skip': 0
-          // }, {
-          //   '$limit': 20
-          // },
-          {
-            $lookup: {
-              from: "users",
-              localField: "UserId",
-              foreignField: "_id",
-              as: "user_details",
-            },
-          },
-          {
-            $unwind: {
-              path: "$user_details",
-            },
-          },
-          {
-            $project: {
-              Member_Name: "$user_details.Username",
-              Amount: "$Amount",
-              Date: {
-                $dateToString: {
-                  format: "%m-%Y",
-                  date: "$Date",
-                },
-              },
-            },
-          },
-        ]),
-      ]);
-    } else {
-      [data.Installment, data.pending_installment] = await Promise.all([
-        Installment.aggregate([
-          {
-            $match: {
-              MandaliId: new mongoose.Types.ObjectId(body.MandaliId),
-            },
-          },
-          // {
-          //   '$skip': 0
-          // }, {
-          //   '$limit': 20
-          // },
-          {
-            $lookup: {
-              from: "users",
-              localField: "UserId",
-              foreignField: "_id",
-              as: "user_details",
-            },
-          },
-          {
-            $unwind: {
-              path: "$user_details",
-            },
-          },
-          {
-            $project: {
-              Member_Name: "$user_details.Username",
-              Amount: "$Amount",
-              Date: {
-                $dateToString: {
-                  format: "%m-%Y",
-                  date: "$Date",
-                },
-              },
-            },
-          },
-        ]),
-        PendingInstallment.aggregate([
-          {
-            $match: {
-              MandaliId: new mongoose.Types.ObjectId(body.MandaliId),
-              UserId: new mongoose.Types.ObjectId(body.UserId),
-            },
-          },
-          // {
-          //   '$skip': 0
-          // }, {
-          //   '$limit': 20
-          // },
-          {
-            $lookup: {
-              from: "users",
-              localField: "UserId",
-              foreignField: "_id",
-              as: "user_details",
-            },
-          },
-          {
-            $unwind: {
-              path: "$user_details",
-            },
-          },
-          {
-            $project: {
-              Member_Name: "$user_details.Username",
-              Amount: "$Amount",
-              Date: {
-                $dateToString: {
-                  format: "%m-%Y",
-                  date: "$Date",
-                },
-              },
-            },
-          },
-        ]),
-      ]);
+    let matchObj = {
+      MandaliId: new mongoose.Types.ObjectId(body.MandaliId),
+    };
+    if (body.UserType == "member") {
+      matchObj.UserId = new mongoose.Types.ObjectId(body.UserId);
     }
+    let [Installment_data, pending_data, penalty_data] = await Promise.all([
+      Installment.aggregate([
+        {
+          $match: {
+            MandaliId: new mongoose.Types.ObjectId(body.MandaliId),
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "UserId",
+            foreignField: "_id",
+            as: "user_details",
+          },
+        },
+        {
+          $unwind: {
+            path: "$user_details",
+          },
+        },
+        {
+          $project: {
+            Member_Name: "$user_details.Username",
+            Amount: "$Amount",
+            Date: {
+              $dateToString: {
+                format: "%m-%Y",
+                date: "$Date",
+              },
+            },
+            Type: "Installment",
+            createdAt: "$createdAt",
+          },
+        },
+      ]),
+      PendingInstallment.aggregate([
+        {
+          $match: matchObj,
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "UserId",
+            foreignField: "_id",
+            as: "user_details",
+          },
+        },
+        {
+          $unwind: {
+            path: "$user_details",
+          },
+        },
+        {
+          $project: {
+            Member_Name: "$user_details.Username",
+            Amount: "$Amount",
+            Date: {
+              $dateToString: {
+                format: "%m-%Y",
+                date: "$Date",
+              },
+            },
+          },
+        },
+      ]),
+      Penalty.aggregate([
+        {
+          $match: {
+            MandaliId: new mongoose.Types.ObjectId(body.MandaliId),
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "UserId",
+            foreignField: "_id",
+            as: "user_details",
+          },
+        },
+        {
+          $unwind: {
+            path: "$user_details",
+          },
+        },
+        {
+          $sort: {
+            createdAt: -1,
+          },
+        },
+        {
+          $project: {
+            Member_Name: "$user_details.Username",
+            Amount: "$Amount",
+            Date: {
+              $dateToString: {
+                format: "%m-%Y",
+                date: "$Date",
+              },
+            },
+            Type: "Penalty",
+            createdAt: "$createdAt",
+          },
+        },
+      ]),
+    ]);
+
+    data.Installment = [...Installment_data, ...penalty_data];
+    data.Installment.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    data.pending_installment = pending_data;
 
     return res.status(201).json({
       statusMessage: "Read Installment successfully",
@@ -234,8 +201,13 @@ let approve_delete_pending_request = async function (req, res) {
         UserId: pending_installment.UserId,
         MandaliId: pending_installment.MandaliId,
       };
-      InstallmentDetails = new Installment(InstallmentDetails);
-      InstallmentDetails.save();
+      if (body.Penalty) {
+        let penalty_detail = new Installment(InstallmentDetails);
+        await penalty_detail.save();
+      } else {
+        InstallmentDetails = new Installment(InstallmentDetails);
+        await InstallmentDetails.save();
+      }
     }
 
     await PendingInstallment.deleteOne({ _id: body.PendingInstallmentId });
