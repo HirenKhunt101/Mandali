@@ -2,7 +2,7 @@
 
 .maindiv {
     margin-top: auto;
-    background-color: rgb(240, 255, 255);
+    background-color: #f5f8fe;
 }
 
 .subdiv1 {
@@ -41,12 +41,12 @@
   background: #ffffff;
   text-align: center;
   font-size: 12px;
-  /* font-weight: 900; */
-  letter-spacing: 2px;
+  font-weight: 700;
+  letter-spacing: 1px;
   color: #1d366d;
-  border-top: 0.1px solid rgba(0, 0, 0, 0.1);
-  border-bottom: 0.1px solid rgba(0, 0, 0, 0.1);
-  border-left: 2px dashed rgba(0, 0, 0, 0.1);
+  /* border-top: 0.1px solid rgba(0, 0, 0, 0.1); */
+  border-bottom: 4px solid rgba(0, 0, 0, 0.1);
+  /* border-left: 2px dashed rgba(0, 0, 0, 0.1); */
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -65,11 +65,11 @@
   text-align: center;
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   color: black;
   border-top: 0.1px solid rgba(0, 0, 0, 0.1);
-  border-bottom: 0.1px solid rgba(0, 0, 0, 0.1);
-  border-left: 2px dashed rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid rgba(4, 0, 0, 0.1);
+  /* border-left: 2px dashed rgba(0, 0, 0, 0.1); */
   padding-top: 10px;
   padding-bottom: 10px;
   background: #ffffff;
@@ -128,7 +128,10 @@
   padding-bottom: 30px;
 }
 
-
+.add_table tr td:nth-child(2) {
+  border-top: 0px solid #ccc; 
+  border-bottom: 0px solid #ccc; 
+}
 
 @media screen and (max-width: 715px) {
   .info {
