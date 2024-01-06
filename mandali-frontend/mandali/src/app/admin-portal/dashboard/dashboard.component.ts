@@ -22,6 +22,8 @@ export class DashboardComponent {
   memberData !: any[]
   UserForm !: FormGroup;
   UserData: any;
+  TotalAccount = 1;
+  UserType = 'member';
 
   constructor(
     private _ModalService: NgbModal,
@@ -32,11 +34,13 @@ export class DashboardComponent {
   ngOnInit(): void {
 
     this.UserData = new UserData().getData('userdata');
-    console.log(this.UserData);
+    this.UserType = this.UserData.user.UserType;
 
     this.UserForm = new FormGroup({
       FirstName: new FormControl('', [Validators.required]),
       LastName: new FormControl('', [Validators.required]),
+      NoOfAccount: new FormControl(1, [Validators.required, Validators.min(1)]),
+      IsAdmin: new FormControl(false),
       ContactNumber: new FormControl('', [Validators.required]),
       Email: new FormControl('', [Validators.required, Validators.email]),
       Password: new FormControl(this.generateRandomPassword(16), [Validators.required]),
@@ -49,6 +53,7 @@ export class DashboardComponent {
       (data: any) => {
         console.log(data); 
         this.memberData = data.data.UserDetails; 
+        this.TotalAccount = data.data.TotalAccount;
       },
       (e) => {
         console.log(e);
@@ -91,11 +96,16 @@ export class DashboardComponent {
   }
 
   add_user_modal() {
-    this._ModalService.open(this.ConfirmModal, {
-      centered: true,
-      backdrop: 'static',
-      keyboard: false,
-    });
+    if(this.UserType == 'admin') {
+      this._ModalService.open(this.ConfirmModal, {
+        centered: true,
+        backdrop: 'static',
+        keyboard: false,
+      });
+    }
+    else {
+      this.openErrorMsg("You don't have access to add member");
+    }
   }
 
   add_user() {

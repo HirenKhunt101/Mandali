@@ -21,7 +21,7 @@ export class InstallmentComponent {
   InstallmentForm !: FormGroup;
   PendingRequest !: any[];
   InstallmentDetails !: any[];
-  UserType: String = 'admin';
+  UserType = 'admin';
   UserData: any;
   months = [
     { name: 'January', value: '01' },

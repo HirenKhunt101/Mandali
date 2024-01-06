@@ -28,6 +28,7 @@ export class HoldingComponent {
   PortFolio: any;
   ActiveTab = "stock_tab";
   SellHoldingForm !: FormGroup;
+  UserType = 'member';
 
   constructor(
     private _ModalService: NgbModal,
@@ -46,8 +47,9 @@ export class HoldingComponent {
     // this.Today = `${yyyy}-${mm}-${dd}`;
     console.log(this.Today);
     
-
     this.UserData = new UserData().getData('userdata');
+    this.UserType = this.UserData.user.UserType;
+
     this.StockForm = new FormGroup({
       Date: new FormControl(this.Today, Validators.required),
       StockIndex: new FormControl('', [Validators.required]),
@@ -150,15 +152,21 @@ export class HoldingComponent {
   } 
 
   openConfirmationModal() {
+
     let index = this.StockForm.get('StockIndex')?.value;
     this.StockForm.get('StockName')?.setValue(this.StocksList[index].name);
     this.StockForm.get('Symbol')?.setValue(this.StocksList[index].symbol);
-    
-    this._ModalService.open(this.ConfirmationModal, {
-      centered: true,
-      backdrop: 'static',
-      keyboard: false,
-    });
+
+    if(this.UserType == 'admin') {
+      this._ModalService.open(this.ConfirmationModal, {
+        centered: true,
+        backdrop: 'static',
+        keyboard: false,
+      });
+    }
+    else {
+      this.openErrorMsg("You don't have access to buy stock");
+    }
   }
 
   change_active_tab(CurrentTab: any) {
@@ -166,19 +174,21 @@ export class HoldingComponent {
   }
 
   openSellPopup(item: any) {
-    console.log(item);
     this.SellHoldingForm.get('StockName')?.setValue(item.StockName);
     this.SellHoldingForm.get('Symbol')?.setValue(item.Symbol);
     this.SellHoldingForm.get('ExistQuantity')?.setValue(item.Quantity);
-    this._ModalService.open(this.SellHoldingModal, {
-      centered: true,
-      backdrop: 'static',
-      keyboard: false,
-    });
+    if(this.UserType == 'admin') {
+      this._ModalService.open(this.SellHoldingModal, {
+        centered: true,
+        backdrop: 'static',
+        keyboard: false,
+      });
+    } else {
+      this.openErrorMsg("You don't have access to sell stock");
+    }
   }
 
   sell_stock() {
-    console.log(this.SellHoldingForm.value);
     if(this.SellHoldingForm.get('SellingQuantity')?.value <= this.SellHoldingForm.get('ExistQuantity')?.value) {
       this._ADMS.sellStock(
         this.SellHoldingForm.value
