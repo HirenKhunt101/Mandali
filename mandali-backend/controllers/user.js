@@ -33,6 +33,7 @@ let user_signup = async function (req, res) {
       alldata.UserType = "admin";
       alldata.MandaliId = mandali._id;
       alldata.Username = body.FirstName + " " + body.LastName;
+      alldata.NoOfAccount = 1;
 
       await Promise.all([
         mongo.insertIntoCollection(alldata),

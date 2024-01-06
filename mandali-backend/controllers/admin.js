@@ -17,14 +17,14 @@ let add_user = async function (req, res) {
     let user = body;
     user.Password = bcrypt.hashSync(user.Password, SALT_WORK_FACTOR);
     user.IsLoginAble = true;
-    user.UserType = "member";
+    user.UserType = body.IsAdmin ? "admin" : "member";
     user.Username = body.FirstName + " " + body.LastName;
 
     user = new User(user);
     await user.save();
 
     return res.status(201).json({
-      statusMessage: " User Profile Created successfully",
+      statusMessage: " User Profile Created Successfully",
       success: true,
     });
   } catch (error) {
@@ -70,8 +70,54 @@ let read_user = async function (req, res) {
           ContactNumber: {
             $first: "$ContactNumber",
           },
+          Email: {
+            $first: "$Email",
+          },
+          NoOfAccount: {
+            $first: "$NoOfAccount",
+          },
           TotalInvestment: {
             $sum: { $ifNull: ["$installment_detail.Amount", 0] },
+          },
+          createdAt: {
+            $first: "$createdAt",
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "penalties",
+          localField: "_id",
+          foreignField: "UserId",
+          as: "penalty_detail",
+        },
+      },
+      {
+        $unwind: {
+          path: "$penalty_detail",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          Username: {
+            $first: "$Username",
+          },
+          ContactNumber: {
+            $first: "$ContactNumber",
+          },
+          Email: {
+            $first: "$Email",
+          },
+          NoOfAccount: {
+            $first: "$NoOfAccount",
+          },
+          TotalInvestment: {
+            $first: "$TotalInvestment",
+          },
+          TotalPenalty: {
+            $sum: { $ifNull: ["$penalty_detail.Amount", 0] },
           },
           createdAt: {
             $first: "$createdAt",
@@ -85,6 +131,10 @@ let read_user = async function (req, res) {
       },
     ]);
 
+    data.TotalAccount = data.UserDetails.reduce(
+      (acc, cur) => acc + (cur.NoOfAccount ? cur.NoOfAccount : 0),
+      0
+    );
     return res.status(201).json({
       statusMessage: " User Profile Read successfully",
       success: true,

@@ -25,6 +25,7 @@ const User_Schema = new Schema(
     FirstName: String,
     LastName: String,
     Password: String,
+    NoOfAccount: Number,
     MandaliId: {
       type: "ObjectId",
       ref: "Mandali",
@@ -164,17 +165,20 @@ const Realized_Schema = new Schema(
 );
 module.exports.Realized = mongoose.model("Realized", Realized_Schema);
 
-const History_Schema = new Schema(
+const Activity_Schema = new Schema(
   {
-    Message: String,
     UserId: {
       type: "ObjectId",
       ref: "User",
     },
+    ActivityType: String,
+    Detail: {
+      type: Object,
+    },
   },
   { timestamps: true }
 );
-module.exports.History = mongoose.model("History", History_Schema);
+module.exports.Activity = mongoose.model("Activity", Activity_Schema);
 
 const Analysis_Schema = new Schema(
   {
