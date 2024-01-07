@@ -134,8 +134,10 @@ export class HoldingComponent {
   }
 
   buy_stock() {   
-    this._ADMS.buyStock(
-      this.StockForm.value
+    this._ADMS.buyStock({
+      ...this.StockForm.value,
+      UserId: this.UserData.user.UserId
+    }
     ).subscribe(
       (data: any) => {
         console.log(data);  
@@ -190,9 +192,10 @@ export class HoldingComponent {
 
   sell_stock() {
     if(this.SellHoldingForm.get('SellingQuantity')?.value <= this.SellHoldingForm.get('ExistQuantity')?.value) {
-      this._ADMS.sellStock(
-        this.SellHoldingForm.value
-      ).subscribe(
+      this._ADMS.sellStock({
+        ...this.SellHoldingForm.value,
+        UserId: this.UserData.user.UserId
+      }).subscribe(
         (data: any) => {
           console.log(data);  
           this._ModalService.dismissAll();

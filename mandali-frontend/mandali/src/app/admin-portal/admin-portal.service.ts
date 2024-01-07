@@ -86,6 +86,12 @@ export class AdminModuleService {
       .pipe(catchError(this.handleError));
   }
 
+  readActivity(data: any) {
+    return this._http
+      .post(this.BaseURL + 'activity/read_activity', data, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     console.log(error);
     if (

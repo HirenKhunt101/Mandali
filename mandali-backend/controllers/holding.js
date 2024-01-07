@@ -8,6 +8,7 @@ const Installment = schema.Installment;
 const PendingInstallment = schema.Pending_installment;
 const Stock = schema.Stock;
 const Realized = schema.Realized;
+const Activity = schema.Activity;
 
 let buy_stock = async function (req, res) {
   let body = req.body;
@@ -21,19 +22,31 @@ let buy_stock = async function (req, res) {
       Quantity: body.Quantity,
       Date: new Date(body.Date),
     };
-    const result = await Stock.updateOne(
-      { Symbol: body.Symbol },
-      {
-        $setOnInsert: {
-          Exchange: body.Exchange,
-          StockName: body.StockName,
-          MandaliId: body.MandaliId,
-          Symbol: body.Symbol,
+
+    let activity_details = new Activity();
+    activity_details.UserId = body.UserId;
+    activity_details.ActivityType = "buy_stock";
+    activity_details.Detail = {
+      ...transaction,
+      StockName: body.StockName,
+    };
+
+    await Promise.all([
+      Stock.updateOne(
+        { Symbol: body.Symbol },
+        {
+          $setOnInsert: {
+            Exchange: body.Exchange,
+            StockName: body.StockName,
+            MandaliId: body.MandaliId,
+            Symbol: body.Symbol,
+          },
+          $push: { Transaction: transaction },
         },
-        $push: { Transaction: transaction },
-      },
-      { upsert: true, new: true }
-    );
+        { upsert: true }
+      ),
+      activity_details.save(),
+    ]);
 
     return res.status(201).json({
       statusMessage: "Stock purchase successfully",
@@ -186,19 +199,30 @@ let sell_stock = async function (req, res) {
       Quantity: body.SellingQuantity,
       Date: new Date(),
     };
-    const result = await Realized.updateOne(
-      { Symbol: body.Symbol },
-      {
-        $setOnInsert: {
-          Exchange: body.Exchange,
-          StockName: body.StockName,
-          MandaliId: body.MandaliId,
-          Symbol: body.Symbol,
+    let activity_details = new Activity();
+    activity_details.UserId = body.UserId;
+    activity_details.ActivityType = "sell_stock";
+    activity_details.Detail = {
+      ...transaction,
+      StockName: body.StockName,
+    };
+
+    await Promise.all([
+      Realized.updateOne(
+        { Symbol: body.Symbol },
+        {
+          $setOnInsert: {
+            Exchange: body.Exchange,
+            StockName: body.StockName,
+            MandaliId: body.MandaliId,
+            Symbol: body.Symbol,
+          },
+          $push: { Transaction: transaction },
         },
-        $push: { Transaction: transaction },
-      },
-      { upsert: true }
-    );
+        { upsert: true }
+      ),
+      activity_details.save(),
+    ]);
 
     return res.status(201).json({
       statusMessage: "Stock sell successfully",

@@ -10,6 +10,7 @@ const Mandali = schema.Mandali;
 const Installment = schema.Installment;
 const PendingInstallment = schema.Pending_installment;
 const Penalty = schema.Penalty;
+const Activity = schema.Activity;
 
 let create_installment = async function (req, res) {
   let body = req.body;
@@ -20,20 +21,35 @@ let create_installment = async function (req, res) {
     StartDate.setDate(1);
     StartDate.setMonth(Number(body.Month - 1));
     StartDate.setFullYear(Number(body.Year));
-
     body.Date = StartDate;
+
+    let activity_details = new Activity();
+    activity_details.UserId = body.UserId;
+    activity_details.Detail = {
+      Month: body.Month,
+      Year: body.Year,
+      Amount: body.Amount,
+    };
+
     if (body.UserType == "admin") {
       if (body.Penalty) {
+        activity_details.ActivityType = "create_penalty";
         let penalty_detail = new Penalty(body);
         await penalty_detail.save();
       } else {
+        activity_details.ActivityType = "create_installment";
         let installment_detail = new Installment(body);
         await installment_detail.save();
       }
     } else {
+      activity_details.ActivityType = body.Penalty
+        ? "create_pending_penalty"
+        : "create_pending_installment";
       let pending_installment = new PendingInstallment(body);
       await pending_installment.save();
     }
+
+    activity_details.save();
 
     return res.status(201).json({
       statusMessage: "Installment create successfully",
@@ -190,30 +206,75 @@ let approve_delete_pending_request = async function (req, res) {
   let body = req.body;
   let data = {};
   try {
-    if (body.Active) {
-      let pending_installment = await PendingInstallment.findById(
-        body.PendingInstallmentId
-      );
+    let activity_details = new Activity();
+    activity_details.UserId = body.UserId;
+    activity_details.ActivityType = body.Active
+      ? "approve_pending_request"
+      : "delete_pending_request";
 
+    if (body.Active) {
+      let pending_installment = await PendingInstallment.aggregate([
+        {
+          $match: {
+            _id: new mongoose.Types.ObjectId(body.PendingInstallmentId),
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "UserId",
+            foreignField: "_id",
+            as: "user_details",
+          },
+        },
+        {
+          $unwind: {
+            path: "$user_details",
+          },
+        },
+        {
+          $project: {
+            Date: "$Date",
+            Amount: "$Amount",
+            UserId: "$UserId",
+            MandaliId: "$MandaliId",
+            Penalty: "$Penalty",
+            Username: "$user_details.Username",
+          },
+        },
+      ]);
+      pending_installment = pending_installment[0];
+      activity_details.Detail = {
+        Username: pending_installment.Username,
+        Date: pending_installment.Date,
+      };
       let InstallmentDetails = {
         Date: pending_installment.Date,
         Amount: pending_installment.Amount,
         UserId: pending_installment.UserId,
         MandaliId: pending_installment.MandaliId,
       };
-      if (body.Penalty) {
+
+      if (pending_installment.Penalty) {
+        activity_details.Detail.transactionType = "Penalty";
         let penalty_detail = new Installment(InstallmentDetails);
         await penalty_detail.save();
       } else {
+        activity_details.Detail.transactionType = "Installment";
         InstallmentDetails = new Installment(InstallmentDetails);
         await InstallmentDetails.save();
       }
     }
 
-    await PendingInstallment.deleteOne({ _id: body.PendingInstallmentId });
+    await Promise.all([
+      PendingInstallment.deleteOne({ _id: body.PendingInstallmentId }),
+      activity_details.save(),
+    ]);
 
     return res.status(201).json({
-      statusMessage: "Approve Delete Pending Installment successfully",
+      statusMessage: body.Active
+        ? "Approve transaction successfully"
+        : "Delete transaction successfully",
       success: true,
       data: data,
     });

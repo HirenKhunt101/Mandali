@@ -124,9 +124,11 @@ export class InstallmentComponent {
       PendingInstallmentId: ID,
       Active: active,
       MandaliId: this.UserData.user.MandaliId,
+      UserId: this.UserData.user.UserId
     }).subscribe(
-      (data) => {
-        console.log(data);  
+      (data: any) => {
+        console.log(data);
+        this.openErrorMsg(data.statusMessage);
         this.ngOnInit();  
       },
       (e) => {

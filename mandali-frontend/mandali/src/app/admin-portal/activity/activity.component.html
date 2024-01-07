@@ -1,0 +1,114 @@
+<div class="page-content page-container" id="page-content">
+  <div class="padding">
+    <div class="row container d-flex justify-content-center">
+      <div>
+        <div *ngFor="let ad of ActivityData" class="card user-activity-card">
+          <div class="card-block">
+            <div class="row mb-2">
+              <div class="col-auto">
+                <div class="u-img">
+                  <img
+                    src=" https://i.imgur.com/UIhwGhr.jpg"
+                    alt="user image"
+                    class="img-radius cover-img"
+                  />
+                  <img
+                    src="https://img.icons8.com/ultraviolet/40/000000/active-state.png"
+                    alt="user image"
+                    class="img-radius profile-img"
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <b class="mb-1">{{ ad.Username }}</b>
+                @switch (ad.ActivityType) { @case ("add_member") {
+                <p class="text-muted">
+                  Added<b> {{ ad.Detail.Username }} </b> as a member.
+                </p>
+
+                } @case ("sell_stock") {
+                <p class="text-muted">
+                  Sold <b> {{ ad.Detail.Quantity }} </b> shares of
+                  <b> {{ ad.Detail.StockName }} </b> stocks at price
+                  <b> {{ ad.Detail.Amount }} </b>.
+                </p>
+                } @case ("buy_stock") {
+                <p class="text-muted">
+                  Purchased
+                  <b> {{ ad.Detail.Quantity }} </b> shares of
+                  <b> {{ ad.Detail.StockName }} </b> stocks at price
+                  <b> {{ ad.Detail.Amount }} </b>.
+                </p>
+
+                }@case ("create_installment") {
+                <p class="text-muted">
+                  Created an installment for
+                  <b>
+                    {{
+                      formateMonthYear(ad.Detail.Month, ad.Detail.Year)
+                        | date : "MMMM, y"
+                    }}
+                  </b>
+                  with amount <b> {{ ad.Detail.Amount }} </b>.
+                </p>
+
+                }@case ("create_penalty") {
+                <p class="text-muted">
+                  Created an penalty for
+                  <b>
+                    {{
+                      formateMonthYear(ad.Detail.Month, ad.Detail.Year)
+                        | date : "MMMM, y"
+                    }}
+                  </b>
+                  with amount <b> {{ ad.Detail.Amount }} </b>.
+                </p>
+
+                } @case ("approve_pending_request") {
+                <p class="text-muted">
+                  Approved a pending request from<b>
+                    {{ ad.Detail.Username }}
+                  </b>
+                  for <b> {{ ad.Detail.transactionType }} </b>.
+                </p>
+
+                }@case ("create_pending_installment") {
+                <p class="text-muted">
+                  Created a pending installment for<b>
+                    {{
+                      formateMonthYear(ad.Detail.Month, ad.Detail.Year)
+                        | date : "MMMM, y"
+                    }}
+                  </b>
+                  with amount<b> {{ ad.Detail.Amount }} </b>.
+                </p>
+
+                }@case ("create_pending_penalty") {
+                <p class="text-muted">
+                  Created a pending penalty for<b>
+                    {{
+                      formateMonthYear(ad.Detail.Month, ad.Detail.Year)
+                        | date : "MMMM, y"
+                    }}
+                  </b>
+                  with amount<b> {{ ad.Detail.Amount }} </b>.
+                </p>
+
+                } @case ("delete_pending_request") {
+                <p class="text-muted">
+                  Approved a pending request from<b>
+                    {{ ad.Detail.Username }}
+                  </b>
+                  for <b> {{ ad.Detail.transactionType }} </b>.
+                </p>
+
+                } }
+                <p class="text-muted">{{ getTimeDifference(ad.createdAt) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -9,6 +9,7 @@ const Cryptr = require("cryptr");
 
 const User = schema.User;
 const Mandali = schema.Mandali;
+const Activity = schema.Activity;
 
 let add_user = async function (req, res) {
   let body = req.body;
@@ -19,9 +20,16 @@ let add_user = async function (req, res) {
     user.IsLoginAble = true;
     user.UserType = body.IsAdmin ? "admin" : "member";
     user.Username = body.FirstName + " " + body.LastName;
-
     user = new User(user);
-    await user.save();
+
+    let activity_details = new Activity();
+    activity_details.UserId = body.AdminId;
+    activity_details.ActivityType = "add_member";
+    activity_details.Detail = {
+      Username: user.Username,
+    };
+
+    await Promise.all([user.save(), activity_details.save()]);
 
     return res.status(201).json({
       statusMessage: " User Profile Created Successfully",

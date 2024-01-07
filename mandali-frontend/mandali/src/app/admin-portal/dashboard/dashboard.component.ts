@@ -110,7 +110,10 @@ export class DashboardComponent {
 
   add_user() {
     if (this.UserForm.valid) {
-      this._ADMS.addUser(this.UserForm.value).subscribe(
+      this._ADMS.addUser({
+        ...this.UserForm.value,
+        AdminId: this.UserData.user.UserId,
+      }).subscribe(
         (data: any) => {
           this._ModalService.dismissAll();
           this.UserForm.reset();
