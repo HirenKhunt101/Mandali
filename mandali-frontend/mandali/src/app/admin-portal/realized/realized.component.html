@@ -1,27 +1,35 @@
 <div>
-    <div>
-        <div class="stock_container2">
-            <h4>Realized</h4>
-            <div class="all-stock" style="overflow-x: auto">
-                <table class="table-sm table-borderless stock_table">
-                <thead>
-                    <th>No.</th>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Profit</th>
-                    <th>Date</th>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let td of RealizedDetails; let i = index">
-                        <td>{{ i+1 }}</td>
-                        <td>{{ td.StockName }} ({{ td.Symbol }})</td>
-                        <td>{{ td.Quantity }}</td>
-                        <td>{{ td.profitLoss }}</td>
-                        <td>{{ td.Date | date:"dd-MM-yyyy, hh:mm a" }}</td>
-                    </tr>
-                </tbody>
-                </table>
-            </div>
-        </div>
-    </div>  
+  <div>
+    <div class="stock_container2">
+      <h4>Realized</h4>
+      <div class="all-stock" style="overflow-x: auto">
+        <table class="table-sm table-borderless stock_table">
+          <thead>
+            <th>No.</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>P/L</th>
+            <th>Date</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let td of RealizedDetails; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ td.StockName }} ({{ td.Symbol }})</td>
+              <td>{{ td.Quantity }}</td>
+              <td
+                [ngClass]="{
+                  profite: td.profitLoss > 0,
+                  loss: td.profitLoss < 0
+                }"
+                style="font-weight: 600"
+              >
+                {{ td.profitLoss }}
+              </td>
+              <td>{{ td.Date | date : "dd-MM-yyyy, hh:mm a" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>

@@ -30,7 +30,30 @@
 }
 
 .stock_table {
-  width: 55%;
+  width: 100%;
+}
+
+.stock_table th {
+  background: #ffffff;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  /* letter-spacing: 1px; */
+  color: #1d366d;
+  border-bottom: 4px solid rgba(0, 0, 0, 0.1);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.stock_table td {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  border-top: 0.1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid rgba(4, 0, 0, 0.1);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: #ffffff;
 }
 
 #month {
@@ -39,6 +62,15 @@
 
 #year {
   min-width: 60px;
+}
+
+.profite {
+  color: #0aaa04;  
+  font-weight: 700;
+}
+
+.loss {
+  color: red;  
 }
 
 @media screen and (max-width: 715px) {
