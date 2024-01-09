@@ -32,6 +32,12 @@ export class AdminModuleService {
       .pipe(catchError(this.handleError));
   }
 
+  readDashboard(data: any) {
+    return this._http
+      .post(this.BaseURL + 'admin/read_dashboard', data, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
   createInstallment(data: any) {
     return this._http
       .post(this.BaseURL + 'installment/create_installment', data, this.httpOptions)

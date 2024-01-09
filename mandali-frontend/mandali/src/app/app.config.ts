@@ -5,12 +5,12 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 
+import { HttpClientModule } from '@angular/common/http';
+
+
 import {
-  NgxUiLoaderModule,
-  NgxUiLoaderConfig,
-  SPINNER,
-  POSITION,
-  PB_DIRECTION,
+  NgxUiLoaderHttpModule,
+  NgxUiLoaderModule
 } from "ngx-ui-loader";
 
 import { routes } from './app.routes';
@@ -52,6 +52,10 @@ export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), provideHttpClient(), importProvidersFrom([
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideStorage(() => getStorage()),
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
+    HttpClientModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    NgxUiLoaderHttpModule.forRoot({
+      showForeground: true
+    }),
   ])]
 };

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from "ngx-ui-loader";
 import { HttpClientModule } from "@angular/common/http";
+import { NgxUiLoaderModule, NgxUiLoaderRouterModule } from "ngx-ui-loader";
 
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HeaderComponent } from './header/header.component';
