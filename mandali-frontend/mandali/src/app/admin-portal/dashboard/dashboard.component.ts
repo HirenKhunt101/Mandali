@@ -24,6 +24,7 @@ export class DashboardComponent {
   UserData: any;
   TotalAccount = 1;
   UserType = 'member';
+  DashboardData: any;
 
   constructor(
     private _ModalService: NgbModal,
@@ -54,6 +55,19 @@ export class DashboardComponent {
         console.log(data); 
         this.memberData = data.data.UserDetails; 
         this.TotalAccount = data.data.TotalAccount;
+      },
+      (e) => {
+        console.log(e);
+      }
+    );
+
+    this._ADMS.readDashboard({
+      MandaliId: this.UserData.user.MandaliId
+    }).subscribe(
+      (data: any) => {
+        this.DashboardData = data.data;       
+        console.log(this.DashboardData);
+         
       },
       (e) => {
         console.log(e);

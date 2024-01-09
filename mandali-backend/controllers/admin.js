@@ -10,6 +10,7 @@ const Cryptr = require("cryptr");
 const User = schema.User;
 const Mandali = schema.Mandali;
 const Activity = schema.Activity;
+const Installment = schema.Installment;
 
 let add_user = async function (req, res) {
   let body = req.body;
@@ -158,7 +159,48 @@ let read_user = async function (req, res) {
   }
 };
 
+let read_dashboard = async function (req, res) {
+  let body = req.body;
+  let data = {};
+  try {
+    let [installment_detail, user_detail] = await Promise.all([
+      Installment.aggregate([
+        {
+          $match: {
+            MandaliId: new mongoose.Types.ObjectId(body.MandaliId),
+          },
+        },
+        {
+          $group: {
+            _id: "$MandaliId",
+            Total: {
+              $sum: "$Amount",
+            },
+          },
+        },
+      ]),
+      User.find({ MandaliId: body.MandaliId }),
+    ]);
+
+    data.TotalInvestment = installment_detail[0].Total;
+    data.TotalMember = user_detail.length;
+    return res.status(201).json({
+      statusMessage: " Dashboard Read successfully",
+      success: true,
+      data: data,
+    });
+  } catch (error) {
+    console.log(`Error in catch : ${error}`);
+    return res.status(501).json({
+      statusMessage: "Error in read dashboard",
+      data: error,
+      success: false,
+    });
+  }
+};
+
 module.exports = {
   add_user: add_user,
   read_user: read_user,
+  read_dashboard: read_dashboard,
 };
